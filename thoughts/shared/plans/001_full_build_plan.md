@@ -589,12 +589,12 @@ Add loading states, error handling, responsive layout, and keyboard shortcuts.
 - Commit: `feat: add keyboard shortcuts for habit navigation`
 
 ### Success Criteria
-- [ ] Loading states show while data fetches
-- [ ] Errors display gracefully
-- [ ] Layout works on mobile viewports (test with browser dev tools)
-- [ ] Keyboard shortcuts work
-- [ ] `pnpm build` passes
-- [ ] `pnpm lint` passes
+- [x] Loading states show while data fetches
+- [x] Errors display gracefully
+- [x] Layout works on mobile viewports (test with browser dev tools)
+- [x] Keyboard shortcuts work
+- [x] `pnpm build` passes
+- [x] `pnpm lint` passes
 
 ---
 
