@@ -17,7 +17,7 @@ type StatsSnapshot = {
 
 const STREAK_MILESTONES = [7, 14, 30];
 
-function detectCelebrations(
+export function detectCelebrations(
   prev: StatsSnapshot,
   current: StatsSnapshot & { dailyEarned: number }
 ): Celebration[] {

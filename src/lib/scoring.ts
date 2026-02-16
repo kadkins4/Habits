@@ -37,14 +37,14 @@ export function calculateDailyScore(date: string): Score {
   return { earned, possible, percentage };
 }
 
-function formatDate(d: Date): string {
+export function formatDate(d: Date): string {
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
-function getMonday(d: Date): Date {
+export function getMonday(d: Date): Date {
   const date = new Date(d);
   const day = date.getDay();
   const diff = day === 0 ? -6 : 1 - day;
@@ -52,12 +52,12 @@ function getMonday(d: Date): Date {
   return date;
 }
 
-function isWeekend(d: Date): boolean {
+export function isWeekend(d: Date): boolean {
   const day = d.getDay();
   return day === 0 || day === 6;
 }
 
-function getDaysInRange(start: Date, end: Date, includeWeekends: boolean): string[] {
+export function getDaysInRange(start: Date, end: Date, includeWeekends: boolean): string[] {
   const days: string[] = [];
   const current = new Date(start);
 
