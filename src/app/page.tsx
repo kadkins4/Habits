@@ -6,6 +6,9 @@ import { HabitChecklist } from "@/components/habits/habit-checklist";
 import { DailyProgress } from "@/components/stats/daily-progress";
 import { WeeklyCard } from "@/components/stats/weekly-card";
 import { MonthlyCard } from "@/components/stats/monthly-card";
+import { StreakCounter } from "@/components/stats/streak-counter";
+import { CelebrationBanner } from "@/components/habits/celebration-banner";
+import { useStats } from "@/lib/api";
 
 function formatDate(): string {
   return new Date().toLocaleDateString("en-US", {
@@ -16,6 +19,8 @@ function formatDate(): string {
 }
 
 export default function Dashboard() {
+  const { stats } = useStats();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
@@ -24,10 +29,13 @@ export default function Dashboard() {
           <Button variant="outline">Edit Habits</Button>
         </header>
 
+        <CelebrationBanner stats={stats} />
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>TODAY — {formatDate()}</span>
+              <StreakCounter />
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
