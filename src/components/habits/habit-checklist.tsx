@@ -91,7 +91,7 @@ export function HabitChecklist() {
             onKeyDown={(e) => handleKeyDown(e, index)}
             onClick={() => toggleHabit(habit.id)}
             className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring ${
-              isCompleted ? "opacity-60" : ""
+              isCompleted ? "border-success/30 bg-success/5" : ""
             }`}
           >
             <Checkbox
@@ -102,7 +102,7 @@ export function HabitChecklist() {
             <span className={isCompleted ? "line-through text-muted-foreground" : ""}>
               {habit.name}
             </span>
-            <span className="ml-auto text-sm text-muted-foreground">
+            <span className="ml-auto text-sm font-medium text-xp">
               +{habit.xp} XP
             </span>
           </div>

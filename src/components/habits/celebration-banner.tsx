@@ -107,9 +107,9 @@ export function CelebrationBanner({ stats }: CelebrationBannerProps) {
       {celebrations.map((c) => (
         <div
           key={c.id}
-          className="flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 p-3"
+          className="flex items-center justify-between rounded-lg border border-primary/30 bg-gradient-to-r from-primary/15 via-purple-500/10 to-pink-500/15 p-3"
         >
-          <span className="font-medium text-sm">🎉 {c.message}</span>
+          <span className="font-medium text-sm text-primary">🎉 {c.message}</span>
           <Button
             variant="ghost"
             size="sm"

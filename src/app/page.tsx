@@ -25,7 +25,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
         <header className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Gamified Habits</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">Gamified Habits</h1>
           <HabitEditor />
         </header>
 

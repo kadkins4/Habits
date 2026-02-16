@@ -32,7 +32,7 @@ export function MonthlyCard() {
         <CardTitle className="text-base">Monthly Score</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm font-medium text-xp">
           {earned} / {possible} XP
         </div>
         <Progress value={percentage} />

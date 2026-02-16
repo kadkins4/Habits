@@ -16,7 +16,7 @@ export function StreakCounter() {
   }
 
   return (
-    <span className="text-sm font-medium">
+    <span className="text-sm font-medium text-streak">
       🔥 {streak} {streak === 1 ? "day" : "days"}
     </span>
   );

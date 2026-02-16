@@ -17,7 +17,7 @@ export function DailyProgress() {
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium">Day Progress</span>
-        <span className="text-muted-foreground">
+        <span className="text-xp font-medium">
           {earned}/{possible} XP ({percentage}%)
         </span>
       </div>
