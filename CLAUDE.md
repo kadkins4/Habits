@@ -1,0 +1,78 @@
+# Gamified Habits
+
+A gamified habit-tracking dashboard that lets users define daily habits with XP values, check them off, and track progress through daily/weekly/monthly score cards with streaks and celebration banners.
+
+## Tech Stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 15 (App Router) |
+| Database | SQLite via Drizzle ORM + better-sqlite3 |
+| Styling | Tailwind CSS v3 + shadcn/ui |
+| Language | TypeScript (strict mode) |
+| State/Fetching | SWR |
+| Package Manager | pnpm |
+| Node.js | 22 LTS |
+
+## Directory Structure
+
+```
+src/
+├── app/                  # Next.js App Router pages + API routes
+│   ├── api/
+│   │   ├── habits/       # Habit CRUD
+│   │   ├── completions/  # Completion toggle
+│   │   ├── stats/        # Daily/weekly/monthly/streak stats
+│   │   └── settings/     # App settings
+│   ├── layout.tsx
+│   └── page.tsx          # Main dashboard
+├── components/
+│   ├── ui/               # shadcn/ui components (auto-generated)
+│   ├── habits/           # Habit-specific components
+│   └── stats/            # Score card components
+├── db/
+│   ├── schema.ts         # Drizzle schema
+│   ├── index.ts          # Database connection
+│   ├── seed.ts           # Seed script
+│   └── migrations/       # Drizzle migrations
+└── lib/
+    ├── api.ts            # SWR hooks
+    └── scoring.ts        # XP/streak calculation helpers
+```
+
+## Code Style
+
+- Always use TypeScript strict mode
+- Use `type` over `interface` unless extending
+- Use named exports, not default exports
+- Use absolute imports via `@/` alias
+- Prefer `async/await` over `.then()`
+- Use Drizzle query builder, never raw SQL
+- SQLite booleans are integers (0/1), not true/false
+- Use `crypto.randomUUID()` for UUID generation (no uuid package)
+
+## Commit Rules
+
+- Conventional commits: `feat:`, `fix:`, `chore:`, etc.
+- Each commit should be atomic and buildable
+- Always run `pnpm lint` before committing — fix any errors
+- Always run `pnpm build` before committing — fix any errors
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `pnpm dev` | Start dev server |
+| `pnpm build` | Production build |
+| `pnpm lint` | Run ESLint |
+| `pnpm db:generate` | Generate Drizzle migrations |
+| `pnpm db:migrate` | Apply migrations |
+| `pnpm db:seed` | Seed example data |
+
+## Key Implementation Details
+
+- **Completions**: Row exists = habit done. No `completed` boolean. Toggle = insert or delete.
+- **Scoring**: Per-day tracking — habits only count toward days after their `created_at`.
+- **Streak**: Days with 0 active habits are skipped (not counted as perfect or broken).
+- **Database file**: `./data/habits.db` (gitignored).
+- **shadcn/ui**: Components copied into `src/components/ui/` (not a package import).
