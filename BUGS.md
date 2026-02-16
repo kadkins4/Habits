@@ -1,0 +1,3 @@
+- Clicking on the checkbox does not mark the habit as complete nor does it toggle. You have to click on the name. It should toggle no matter where you click on the habit.
+- Marking a habit as complete does not change the day progress. Neither does unmarking.
+- 
