@@ -1,8 +1,22 @@
-# Feature Planning
+# Features
 
-Potential features to add to Gamified Habits, organized by impact.
+Planned features for Gamified Habits. Items move through: **Next** -> **In Progress** -> **Done**.
 
-## High Impact
+---
+
+## Next
+
+_(pick from the backlog below when ready)_
+
+---
+
+## In Progress
+
+_(none yet)_
+
+---
+
+## Backlog — High Impact
 
 ### Leveling System
 Add a user level based on total lifetime XP earned. Leveling up triggers a satisfying animation/sound. Gives a persistent sense of progression beyond daily streaks — even on a bad day, you never lose your level.
@@ -34,7 +48,9 @@ Allow users to go back exactly one day to check off habits they forgot to log. O
 ### Add as Reminder (Apple Reminders / Calendar)
 Provide an "Add as Reminder" or "Add to Calendar" option when creating or editing a habit. This would generate an Apple Reminders entry or calendar event (via `.ics` file download or deep-linking into the Reminders/Calendar apps on iOS and macOS). Helps bridge the gap between tracking habits and actually remembering to do them — the app becomes the source of truth while the OS handles the nudge.
 
-## Medium Impact
+---
+
+## Backlog — Medium Impact
 
 ### Weekly / Monthly Calendar View
 A calendar view that shows each day color-coded by completion percentage — green for high completion, yellow for partial, red for poor. Configurable thresholds (e.g., green = 80%+, yellow = 40-79%, red = below 40%) let users set their own standards. Toggle between weekly and monthly views. Clicking a day expands to show which specific habits were completed. At a glance you can spot patterns like consistently red Fridays or a green streak that broke mid-month, making it far more actionable than raw numbers.
@@ -57,7 +73,9 @@ Let users drag habits to reorder their checklist. People naturally want their mo
 ### Motivational Quotes / Daily Tip
 Show a rotating motivational quote or habit-building tip at the top of the dashboard. Keeps the experience fresh each day and provides a small psychological nudge. Could pull from a curated local list or an API.
 
-## Nice to Have
+---
+
+## Backlog — Nice to Have
 
 ### Habit Notes / Journal
 Optional short note per day or per habit completion ("Ran 3 miles today", "Only did 10 minutes of reading"). Adds context to historical data and turns the tracker into a lightweight journal.
@@ -85,3 +103,9 @@ Once multi-user is in place, add an opt-in leaderboard showing weekly/monthly XP
 
 ### Streak Shield / Freeze
 A consumable item (earned through achievements or long streaks) that protects your streak for one missed day. Adds a layer of strategy — do you use your shield now or save it? Gamifies the safety net itself, unlike vacation mode which is a blunt pause.
+
+---
+
+## Done
+
+_(none yet)_

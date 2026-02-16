@@ -78,6 +78,21 @@ src/
 - **Database file**: `./data/habits.db` (gitignored).
 - **shadcn/ui**: Components copied into `src/components/ui/` (not a package import).
 
+## Project Tracking
+
+We use two markdown files to track work. Both follow the same pattern: items are organized under status headers and move forward as work progresses. No numbered lists — use `###` headings for each item.
+
+| File | Purpose | Flow |
+|------|---------|------|
+| `BUGS.md` | Known bugs with root cause analysis | **Next** -> **Done** |
+| `FEATURES.md` | Planned features by impact tier | **Next** -> **In Progress** -> **Done** |
+
+- When starting a bug or feature, move its heading under the appropriate status section.
+- When finishing, move it to **Done**.
+- New bugs go under **Next** with a priority prefix and a root cause description and affected files.
+- Bug priorities: **P1** (blocking / broken core functionality), **P2** (degraded experience), **P3** (minor annoyance).
+- New features go into the appropriate **Backlog** tier (High / Medium / Nice to Have) unless they're immediately next up.
+
 **IMPORTANT**
 ## AI-Specific Rules
 
@@ -87,6 +102,8 @@ src/
 
 ### General
 - Favor simple solutions over complex ones.
+- When the user states a new coding preference or process change, ask if it should be added to `CLAUDE.md` before making the update.
+- When making changes, ask if we should commit those changes. Or if you are starting a new task and there are uncommitted changes, ask if those should be committed prior.
 
 ### Components & Architecture
 - Default to Server Components. Only add `'use client'` when client-side interactivity or hooks are needed.
