@@ -54,6 +54,7 @@ A fully functional single-page habit dashboard matching the DESIGN.md spec:
 3. **UUIDs**: Use `crypto.randomUUID()` (built into Node 22) — no `uuid` package needed.
 4. **Tailwind v3**: For stable shadcn/ui compatibility.
 5. **No GitHub push**: Local git only for now.
+6. **Style**: Dark mode only. Minimalistic but stylish.
 
 ---
 
@@ -150,12 +151,12 @@ Initialize the Next.js project with all dependencies installed and configured.
 - Commit: `chore: create project directory structure`
 
 ### Success Criteria
-- [ ] `pnpm dev` starts without errors
-- [ ] `pnpm build` completes without errors
-- [ ] `pnpm lint` passes
-- [ ] All dependencies installed
-- [ ] shadcn/ui components available
-- [ ] Tailwind v3 confirmed (check `tailwind.config.ts` exists)
+- [x] `pnpm dev` starts without errors
+- [x] `pnpm build` completes without errors
+- [x] `pnpm lint` passes
+- [x] All dependencies installed
+- [x] shadcn/ui components available
+- [x] Tailwind v3 confirmed (check `tailwind.config.ts` exists)
 
 ---
 
@@ -248,12 +249,12 @@ Set up the Drizzle ORM schema, SQLite database, migrations, and seed data.
 - Commit: `feat: add seed script with example habits`
 
 ### Success Criteria
-- [ ] `pnpm db:generate` works
-- [ ] `pnpm db:migrate` creates the SQLite file in `data/`
-- [ ] `pnpm db:seed` populates data
-- [ ] Database file is gitignored
-- [ ] Schema has `completions` table WITHOUT `completed` column
-- [ ] Unique constraint on `(habit_id, date)` in completions
+- [x] `pnpm db:generate` works
+- [x] `pnpm db:migrate` creates the SQLite file in `data/`
+- [x] `pnpm db:seed` populates data
+- [x] Database file is gitignored
+- [x] Schema has `completions` table WITHOUT `completed` column
+- [x] Unique constraint on `(habit_id, date)` in completions
 
 ---
 
@@ -277,11 +278,11 @@ Build the `/api/habits` endpoints.
 - Commit: `feat: add PUT and DELETE /api/habits/[id]`
 
 ### Success Criteria
-- [ ] GET /api/habits returns seeded habits
-- [ ] POST creates a new habit
-- [ ] PUT updates a habit
-- [ ] DELETE soft-deletes (sets active=0)
-- [ ] `pnpm build` passes
+- [x] GET /api/habits returns seeded habits
+- [x] POST creates a new habit
+- [x] PUT updates a habit
+- [x] DELETE soft-deletes (sets active=0)
+- [x] `pnpm build` passes
 
 ---
 
@@ -301,10 +302,10 @@ Build the `/api/completions` endpoints.
 - Commit: `feat: add GET and POST /api/completions`
 
 ### Success Criteria
-- [ ] GET returns completions for a date
-- [ ] POST creates a completion if none exists
-- [ ] POST deletes the completion if one exists (toggle)
-- [ ] `pnpm build` passes
+- [x] GET returns completions for a date
+- [x] POST creates a completion if none exists
+- [x] POST deletes the completion if one exists (toggle)
+- [x] `pnpm build` passes
 
 ---
 
@@ -365,13 +366,13 @@ Build the `/api/stats` endpoint with daily, weekly, monthly XP and streak calcul
 - Commit: `feat: add /api/stats endpoint`
 
 ### Success Criteria
-- [ ] GET /api/stats returns correct structure
-- [ ] Daily score reflects today's completions
-- [ ] Weekly score respects include_weekends setting
-- [ ] Monthly score only counts up to today
-- [ ] Per-day tracking: habits only count for days after their `created_at`
-- [ ] Streak calculation works per DESIGN.md rules
-- [ ] `pnpm build` passes
+- [x] GET /api/stats returns correct structure
+- [x] Daily score reflects today's completions
+- [x] Weekly score respects include_weekends setting
+- [x] Monthly score only counts up to today
+- [x] Per-day tracking: habits only count for days after their `created_at`
+- [x] Streak calculation works per DESIGN.md rules
+- [x] `pnpm build` passes
 
 ---
 
@@ -389,9 +390,9 @@ Build the `/api/settings` endpoints.
 - Commit: `feat: add GET and PUT /api/settings`
 
 ### Success Criteria
-- [ ] GET returns settings including include_weekends
-- [ ] PUT upserts a setting
-- [ ] `pnpm build` passes
+- [x] GET returns settings including include_weekends
+- [x] PUT upserts a setting
+- [x] `pnpm build` passes
 
 ---
 
@@ -437,11 +438,11 @@ Build the main dashboard page with header, today panel, and habit checklist wire
 - Commit: `feat: build habit checklist with toggle completions`
 
 ### Success Criteria
-- [ ] Dashboard renders with header, date, and habit list
-- [ ] Checkboxes toggle and persist to database
-- [ ] Optimistic updates feel instant
-- [ ] Stats revalidate when completion is toggled
-- [ ] `pnpm build` passes
+- [x] Dashboard renders with header, date, and habit list
+- [x] Checkboxes toggle and persist to database
+- [x] Optimistic updates feel instant
+- [x] Stats revalidate when completion is toggled
+- [x] `pnpm build` passes
 
 ---
 
@@ -475,11 +476,11 @@ Build the daily progress bar and weekly/monthly score cards.
 - Commit: `feat: add weekly and monthly score cards`
 
 ### Success Criteria
-- [ ] Progress bar updates when habits are checked
-- [ ] Weekly card shows correct XP
-- [ ] Weekend toggle updates stats
-- [ ] Monthly card shows correct XP for current month
-- [ ] `pnpm build` passes
+- [x] Progress bar updates when habits are checked
+- [x] Weekly card shows correct XP
+- [x] Weekend toggle updates stats
+- [x] Monthly card shows correct XP for current month
+- [x] `pnpm build` passes
 
 ---
 
@@ -513,11 +514,11 @@ Add streak counter display and celebration banners.
 - Commit: `feat: add celebration banners with animations`
 
 ### Success Criteria
-- [ ] Streak shows correct count
-- [ ] Celebration banner appears when completing all daily habits
-- [ ] Banner is dismissible
-- [ ] Multiple celebrations can appear simultaneously
-- [ ] `pnpm build` passes
+- [x] Streak shows correct count
+- [x] Celebration banner appears when completing all daily habits
+- [x] Banner is dismissible
+- [x] Multiple celebrations can appear simultaneously
+- [x] `pnpm build` passes
 
 ---
 
@@ -548,12 +549,12 @@ Build the "Edit Habits" modal/drawer for CRUD operations on habits.
 - Commit: `feat: add habit editor dialog with CRUD`
 
 ### Success Criteria
-- [ ] Can create new habits from the editor
-- [ ] Can edit habit name and XP
-- [ ] Can deactivate/reactivate habits
-- [ ] Can delete habits (soft delete)
-- [ ] Dashboard updates when editor is closed
-- [ ] `pnpm build` passes
+- [x] Can create new habits from the editor
+- [x] Can edit habit name and XP
+- [x] Can deactivate/reactivate habits
+- [x] Can delete habits (soft delete)
+- [x] Dashboard updates when editor is closed
+- [x] `pnpm build` passes
 
 ---
 

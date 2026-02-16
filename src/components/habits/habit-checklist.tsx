@@ -1,5 +1,6 @@
 "use client";
 
+import type { KeyboardEvent } from "react";
 import { useHabits, useCompletions, useStats } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -13,7 +14,7 @@ function getToday(): string {
 
 export function HabitChecklist() {
   const today = getToday();
-  const { habits, isLoading: habitsLoading } = useHabits();
+  const { habits, isLoading: habitsLoading, error: habitsError } = useHabits();
   const { completions, mutate: mutateCompletions } = useCompletions(today);
   const { mutate: mutateStats } = useStats();
 
@@ -30,6 +31,33 @@ export function HabitChecklist() {
 
     mutateCompletions();
     mutateStats();
+  }
+
+  function handleKeyDown(e: KeyboardEvent<HTMLDivElement>, index: number) {
+    const items = e.currentTarget.parentElement?.querySelectorAll<HTMLElement>(
+      "[data-habit-item]"
+    );
+    if (!items) return;
+
+    if (e.key === "ArrowDown" && index < items.length - 1) {
+      e.preventDefault();
+      items[index + 1].focus();
+    } else if (e.key === "ArrowUp" && index > 0) {
+      e.preventDefault();
+      items[index - 1].focus();
+    } else if (e.key === " ") {
+      e.preventDefault();
+      const habit = habits[index];
+      if (habit) toggleHabit(habit.id);
+    }
+  }
+
+  if (habitsError) {
+    return (
+      <p className="text-sm text-destructive">
+        Failed to load habits. Please refresh.
+      </p>
+    );
   }
 
   if (habitsLoading) {
@@ -51,19 +79,25 @@ export function HabitChecklist() {
   }
 
   return (
-    <div className="space-y-2">
-      {habits.map((habit: { id: string; name: string; xp: number }) => {
+    <div className="space-y-2" role="list">
+      {habits.map((habit: { id: string; name: string; xp: number }, index: number) => {
         const isCompleted = completedHabitIds.has(habit.id);
         return (
-          <label
+          <div
             key={habit.id}
-            className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent ${
+            data-habit-item
+            role="listitem"
+            tabIndex={0}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            onClick={() => toggleHabit(habit.id)}
+            className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring ${
               isCompleted ? "opacity-60" : ""
             }`}
           >
             <Checkbox
               checked={isCompleted}
               onCheckedChange={() => toggleHabit(habit.id)}
+              tabIndex={-1}
             />
             <span className={isCompleted ? "line-through text-muted-foreground" : ""}>
               {habit.name}
@@ -71,7 +105,7 @@ export function HabitChecklist() {
             <span className="ml-auto text-sm text-muted-foreground">
               +{habit.xp} XP
             </span>
-          </label>
+          </div>
         );
       })}
     </div>

@@ -4,8 +4,9 @@ import { useStats } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
 
 export function DailyProgress() {
-  const { stats, isLoading } = useStats();
+  const { stats, isLoading, error } = useStats();
 
+  if (error) return null;
   if (isLoading || !stats) {
     return <div className="h-12 rounded bg-muted animate-pulse" />;
   }
