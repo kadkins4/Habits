@@ -55,6 +55,7 @@ src/
 
 - Conventional commits: `feat:`, `fix:`, `chore:`, etc.
 - Each commit should be atomic and buildable
+- Commit messages should be simple and short. No co-author and try to keep to one line
 - Always run `pnpm lint` before committing — fix any errors
 - Always run `pnpm build` before committing — fix any errors
 
@@ -76,3 +77,38 @@ src/
 - **Streak**: Days with 0 active habits are skipped (not counted as perfect or broken).
 - **Database file**: `./data/habits.db` (gitignored).
 - **shadcn/ui**: Components copied into `src/components/ui/` (not a package import).
+
+**IMPORTANT**
+## AI-Specific Rules
+
+### ESLint Rules
+- Use `import type { Foo }` for type-only imports (enforced by `consistent-type-imports`)
+- Import from namespace files, not internal component paths
+
+### General
+- Favor simple solutions over complex ones.
+
+### Components & Architecture
+- Default to Server Components. Only add `'use client'` when client-side interactivity or hooks are needed.
+- Components should be dumb. Break complex components into smaller reusable components or offload logic to custom hooks.
+- Avoid nested if statements. Prefer ternaries or early returns; if logic gets too complicated, extract to a helper function.
+
+### File Organization
+- No barrel files (`index.ts` that re-exports). Import directly from the source file.
+- If a component has more than one type, helper method, or constant, move those to their own respective file in that directory (types -> `types.ts`, helpers and constants -> `utils.ts`)
+- Use absolute imports in TSX files (`@components/…`, no `./` or `../`)
+
+### Testing
+- Do NOT test implementation details—only functionality that affects the end user.
+- Prefer `getByRole`/`getByText` over `getByTestId` where possible.
+
+### Code Style Guide
+- **No nested ternaries.** Keep ternaries simple and readable. If logic requires nesting, extract to a helper function or use early returns.
+- Prefer explicit ternaries over short-circuit evaluation for conditional rendering:
+  ```tsx
+  // Good
+  {share_url ? <ShareButton shareUrl={share_url} title={title} /> : null}
+
+  // Bad
+  {!!share_url && <ShareButton shareUrl={share_url} title={title} />}
+  ```
