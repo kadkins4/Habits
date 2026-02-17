@@ -2,14 +2,19 @@ import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export function useHabits() {
-  const { data, error, isLoading, mutate } = useSWR("/api/habits", fetcher);
+export function useHabits(status?: string) {
+  const url = status ? `/api/habits?status=${status}` : "/api/habits";
+  const { data, error, isLoading, mutate } = useSWR(url, fetcher);
   return {
     habits: data?.habits ?? [],
     isLoading,
     error,
     mutate,
   };
+}
+
+export function useAllHabits() {
+  return useHabits("all");
 }
 
 export function useCompletions(date: string) {
@@ -57,4 +62,3 @@ export function useSettings() {
     mutate,
   };
 }
-

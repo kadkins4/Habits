@@ -13,8 +13,11 @@ export async function PUT(
     const updates: Record<string, unknown> = {};
 
     if (body.name !== undefined) updates.name = body.name;
-    if (body.xp !== undefined) updates.xp = body.xp;
-    if (body.active !== undefined) updates.active = body.active;
+    if (body.status !== undefined) updates.status = body.status;
+    if (body.difficulty !== undefined) updates.difficulty = body.difficulty;
+    if (body.type !== undefined) updates.type = body.type;
+    if (body.description !== undefined) updates.description = body.description;
+    if (body.icon !== undefined) updates.icon = body.icon;
     if (body.sort_order !== undefined) updates.sort_order = body.sort_order;
 
     await db.update(habits).set(updates).where(eq(habits.id, id));
@@ -39,7 +42,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    await db.update(habits).set({ active: 0 }).where(eq(habits.id, id));
+    await db.update(habits).set({ status: "archived" }).where(eq(habits.id, id));
 
     return NextResponse.json({ success: true });
   } catch (error) {

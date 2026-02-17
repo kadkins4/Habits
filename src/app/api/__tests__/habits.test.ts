@@ -24,7 +24,7 @@ vi.mock("@/db", () => ({
 
 vi.mock("@/db/schema", () => ({
   habits: {
-    active: "active",
+    status: "status",
     sort_order: "sort_order",
   },
 }));
@@ -38,12 +38,13 @@ describe("GET /api/habits", () => {
 
   it("returns active habits ordered by sort_order", async () => {
     const habitsData = [
-      { id: "h1", name: "Exercise", xp: 20, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
-      { id: "h2", name: "Read", xp: 10, active: 1, sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h1", name: "Exercise", status: "active", difficulty: "hard", type: "habit", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h2", name: "Read", status: "active", difficulty: "medium", type: "habit", sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
     ];
     mockAll.mockResolvedValueOnce(habitsData);
 
-    const response = await GET();
+    const request = new Request("http://localhost/api/habits");
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -62,7 +63,7 @@ describe("POST /api/habits", () => {
 
     const request = new Request("http://localhost/api/habits", {
       method: "POST",
-      body: JSON.stringify({ name: "Meditate", xp: 15 }),
+      body: JSON.stringify({ name: "Meditate", difficulty: "medium" }),
     });
 
     const response = await POST(request);
@@ -70,9 +71,9 @@ describe("POST /api/habits", () => {
 
     expect(response.status).toBe(201);
     expect(data.habit.name).toBe("Meditate");
-    expect(data.habit.xp).toBe(15);
+    expect(data.habit.difficulty).toBe("medium");
     expect(data.habit.sort_order).toBe(4);
-    expect(data.habit.active).toBe(1);
+    expect(data.habit.status).toBe("active");
     expect(data.habit.id).toBeDefined();
     expect(mockInsert).toHaveBeenCalled();
     expect(mockValues).toHaveBeenCalled();

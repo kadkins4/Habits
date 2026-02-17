@@ -1,4 +1,16 @@
-import type { StatsSnapshot, Celebration } from "@/lib/types";
+import type { StatsSnapshot, Celebration, HabitStatus } from "@/lib/types";
+
+export const COLUMN_CONFIG: readonly { status: HabitStatus; title: string }[] = [
+  { status: "backlog", title: "Backlog" },
+  { status: "active", title: "Active" },
+  { status: "archived", title: "Archived" },
+] as const;
+
+export const DIFFICULTY_COLORS: Record<string, string> = {
+  easy: "bg-green-500/20 text-green-400",
+  medium: "bg-yellow-500/20 text-yellow-400",
+  hard: "bg-red-500/20 text-red-400",
+};
 
 export const STREAK_MILESTONES = [7, 14, 30];
 

@@ -17,7 +17,7 @@ vi.mock("@/db", () => ({
 
 vi.mock("@/db/schema", () => ({
   habits: {
-    active: "active",
+    status: "status",
     created_at: "created_at",
   },
   completions: {
@@ -83,20 +83,21 @@ describe("calculateDailyScore", () => {
 
   it("calculates correct XP from completed habits", () => {
     const habitsData = [
-      { id: "h1", name: "Exercise", xp: 20, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
-      { id: "h2", name: "Read", xp: 10, active: 1, sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h1", name: "Exercise", difficulty: "hard", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h2", name: "Read", difficulty: "medium", status: "active", sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
     ];
     const completionsData = [{ id: "c1", habit_id: "h1", date: "2026-02-15" }];
 
     mockAll.mockReturnValueOnce(habitsData).mockReturnValueOnce(completionsData);
 
     const score = calculateDailyScore("2026-02-15");
+    // hard=20, medium=10; earned=20 (h1 completed), possible=30
     expect(score).toEqual({ earned: 20, possible: 30, percentage: 67 });
   });
 
   it("ignores habits created after the given date", () => {
     const habitsData = [
-      { id: "h1", name: "Exercise", xp: 20, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h1", name: "Exercise", difficulty: "hard", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
     ];
     const completionsData = [{ id: "c1", habit_id: "h1", date: "2026-02-10" }];
 
@@ -108,15 +109,16 @@ describe("calculateDailyScore", () => {
 
   it("handles partial completion percentage", () => {
     const habitsData = [
-      { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
-      { id: "h2", name: "Read", xp: 10, active: 1, sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
-      { id: "h3", name: "Meditate", xp: 10, active: 1, sort_order: 3, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h1", name: "Exercise", difficulty: "medium", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h2", name: "Read", difficulty: "medium", status: "active", sort_order: 2, created_at: "2026-01-01T00:00:00.000Z" },
+      { id: "h3", name: "Meditate", difficulty: "medium", status: "active", sort_order: 3, created_at: "2026-01-01T00:00:00.000Z" },
     ];
     const completionsData = [{ id: "c1", habit_id: "h1", date: "2026-02-15" }];
 
     mockAll.mockReturnValueOnce(habitsData).mockReturnValueOnce(completionsData);
 
     const score = calculateDailyScore("2026-02-15");
+    // all medium=10; earned=10 (h1 completed), possible=30
     expect(score).toEqual({ earned: 10, possible: 30, percentage: 33 });
   });
 });
@@ -130,7 +132,7 @@ describe("calculateStreak", () => {
   it("counts consecutive 100% days", () => {
     vi.setSystemTime(new Date(2026, 1, 12));
 
-    const habit = { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
+    const habit = { id: "h1", name: "Exercise", difficulty: "medium", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
     const completion = (date: string) => ({ id: `c-${date}`, habit_id: "h1", date });
 
     mockAll
@@ -147,7 +149,7 @@ describe("calculateStreak", () => {
   it("today incomplete does not break streak", () => {
     vi.setSystemTime(new Date(2026, 1, 12));
 
-    const habit = { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
+    const habit = { id: "h1", name: "Exercise", difficulty: "medium", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
     const completion = (date: string) => ({ id: `c-${date}`, habit_id: "h1", date });
 
     mockAll
@@ -165,7 +167,7 @@ describe("calculateStreak", () => {
   it("skips days with 0 active habits", () => {
     vi.setSystemTime(new Date(2026, 1, 12));
 
-    const habit = { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
+    const habit = { id: "h1", name: "Exercise", difficulty: "medium", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
     const completion = (date: string) => ({ id: `c-${date}`, habit_id: "h1", date });
 
     mockAll
@@ -183,7 +185,7 @@ describe("calculateStreak", () => {
   it("stops at first non-100% day", () => {
     vi.setSystemTime(new Date(2026, 1, 12));
 
-    const habit = { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
+    const habit = { id: "h1", name: "Exercise", difficulty: "medium", status: "active", sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
     const completion = (date: string) => ({ id: `c-${date}`, habit_id: "h1", date });
 
     mockAll

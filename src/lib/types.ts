@@ -4,6 +4,18 @@ export type Habit = typeof habits.$inferSelect;
 
 export type Completion = typeof completions.$inferSelect;
 
+export type HabitStatus = "backlog" | "active" | "archived";
+
+export type HabitDifficulty = "easy" | "medium" | "hard";
+
+export type HabitType = "habit" | "antihabit";
+
+const DIFFICULTY_XP: Record<HabitDifficulty, number> = { easy: 5, medium: 10, hard: 20 };
+
+export function difficultyToXp(difficulty: HabitDifficulty): number {
+  return DIFFICULTY_XP[difficulty];
+}
+
 export function formatDate(d: Date): string {
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");

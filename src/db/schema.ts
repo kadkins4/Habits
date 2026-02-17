@@ -3,8 +3,11 @@ import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core
 export const habits = sqliteTable("habits", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  xp: integer("xp").notNull().default(10),
-  active: integer("active").notNull().default(1),
+  status: text("status").notNull().default("active"),
+  difficulty: text("difficulty").notNull().default("medium"),
+  type: text("type").notNull().default("habit"),
+  description: text("description"),
+  icon: text("icon"),
   sort_order: integer("sort_order").notNull(),
   created_at: text("created_at").notNull(),
 });

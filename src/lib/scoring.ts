@@ -1,14 +1,14 @@
 import { and, eq, lte } from "drizzle-orm";
 import { db } from "@/db";
 import { habits, completions } from "@/db/schema";
-import { formatDate } from "@/lib/types";
-import type { Score } from "@/lib/types";
+import { formatDate, difficultyToXp } from "@/lib/types";
+import type { Score, HabitDifficulty } from "@/lib/types";
 
 export function calculateDailyScore(date: string): Score {
   const activeHabits = db
     .select()
     .from(habits)
-    .where(and(eq(habits.active, 1), lte(habits.created_at, date + "T23:59:59.999Z")))
+    .where(and(eq(habits.status, "active"), lte(habits.created_at, date + "T23:59:59.999Z")))
     .all();
 
   if (activeHabits.length === 0) {
@@ -23,10 +23,10 @@ export function calculateDailyScore(date: string): Score {
 
   const completedHabitIds = new Set(dayCompletions.map((c) => c.habit_id));
 
-  const possible = activeHabits.reduce((sum, h) => sum + h.xp, 0);
+  const possible = activeHabits.reduce((sum, h) => sum + difficultyToXp(h.difficulty as HabitDifficulty), 0);
   const earned = activeHabits
     .filter((h) => completedHabitIds.has(h.id))
-    .reduce((sum, h) => sum + h.xp, 0);
+    .reduce((sum, h) => sum + difficultyToXp(h.difficulty as HabitDifficulty), 0);
 
   const percentage = possible > 0 ? Math.round((earned / possible) * 100) : 0;
 

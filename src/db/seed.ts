@@ -29,13 +29,14 @@ db.delete(settings).run();
 
 // Habits created at different times to simulate organic growth
 const seedHabits = [
-  { id: crypto.randomUUID(), name: "Morning workout",  xp: 30, active: 1, sort_order: 1, created_at: daysAgo(60).toISOString() },
-  { id: crypto.randomUUID(), name: "Read 30 minutes",  xp: 20, active: 1, sort_order: 2, created_at: daysAgo(60).toISOString() },
-  { id: crypto.randomUUID(), name: "Meditate",         xp: 15, active: 1, sort_order: 3, created_at: daysAgo(45).toISOString() },
-  { id: crypto.randomUUID(), name: "No junk food",     xp: 25, active: 1, sort_order: 4, created_at: daysAgo(30).toISOString() },
-  { id: crypto.randomUUID(), name: "Code for 1 hour",  xp: 40, active: 1, sort_order: 5, created_at: daysAgo(21).toISOString() },
-  { id: crypto.randomUUID(), name: "Journal",          xp: 10, active: 1, sort_order: 6, created_at: daysAgo(14).toISOString() },
-  { id: crypto.randomUUID(), name: "Drink 8 glasses",  xp: 10, active: 0, sort_order: 7, created_at: daysAgo(55).toISOString() },
+  { id: crypto.randomUUID(), name: "Morning workout",  status: "active", difficulty: "hard",   type: "habit",     description: "30 min strength or cardio", icon: "💪", sort_order: 1, created_at: daysAgo(60).toISOString() },
+  { id: crypto.randomUUID(), name: "Read 30 minutes",  status: "active", difficulty: "medium", type: "habit",     description: null, icon: "📖", sort_order: 2, created_at: daysAgo(60).toISOString() },
+  { id: crypto.randomUUID(), name: "Meditate",         status: "active", difficulty: "easy",   type: "habit",     description: "10 min guided meditation", icon: "🧘", sort_order: 3, created_at: daysAgo(45).toISOString() },
+  { id: crypto.randomUUID(), name: "No junk food",     status: "active", difficulty: "hard",   type: "antihabit", description: "Avoid processed snacks", icon: "🚫", sort_order: 4, created_at: daysAgo(30).toISOString() },
+  { id: crypto.randomUUID(), name: "Code for 1 hour",  status: "active", difficulty: "hard",   type: "habit",     description: null, icon: "💻", sort_order: 5, created_at: daysAgo(21).toISOString() },
+  { id: crypto.randomUUID(), name: "Journal",          status: "active", difficulty: "easy",   type: "habit",     description: null, icon: "📓", sort_order: 6, created_at: daysAgo(14).toISOString() },
+  { id: crypto.randomUUID(), name: "Drink 8 glasses",  status: "archived", difficulty: "easy", type: "habit",     description: null, icon: "💧", sort_order: 7, created_at: daysAgo(55).toISOString() },
+  { id: crypto.randomUUID(), name: "Learn a language",  status: "backlog", difficulty: "medium", type: "habit",   description: "15 min Duolingo or Anki", icon: "🌍", sort_order: 8, created_at: daysAgo(5).toISOString() },
 ];
 
 for (const habit of seedHabits) {
@@ -73,8 +74,10 @@ for (let daysBack = 1; daysBack <= 60; daysBack++) {
     const habitCreated = new Date(habit.created_at);
     // Only generate completions after the habit was created
     if (date < habitCreated) continue;
-    // Skip inactive habit after it was "archived" (only active first 40 days)
-    if (habit.active === 0 && daysBack < 15) continue;
+    // Skip non-active habits (archived/backlog don't get completions)
+    if (habit.status !== "active") continue;
+    // Skip archived habit after it was "archived" (only active first 40 days)
+    if (habit.name === "Drink 8 glasses" && daysBack < 15) continue;
 
     const baseRate = completionRates[habit.name] ?? 0.5;
     // Slightly lower completion on weekends
@@ -109,7 +112,7 @@ for (let daysBack = 1; daysBack <= 60; daysBack++) {
 
 const today = formatLocalDate(new Date());
 console.log("Seeded database successfully:");
-console.log(`  - ${seedHabits.length} habits (1 inactive/archived)`);
+console.log(`  - ${seedHabits.length} habits (1 archived, 1 backlog, 1 antihabit)`);
 console.log(`  - ${completionCount} completions across 60 days`);
 console.log(`  - Date range: ${formatLocalDate(daysAgo(60))} to ${formatLocalDate(daysAgo(1))}`);
 console.log(`  - Today (${today}) left empty for interactive testing`);

@@ -3,7 +3,8 @@
 import type { KeyboardEvent } from "react";
 import { useHabits, useCompletions, useStats, useDailyStats } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { Habit, Completion } from "@/lib/types";
+import { difficultyToXp } from "@/lib/types";
+import type { Habit, Completion, HabitDifficulty } from "@/lib/types";
 
 type HabitChecklistProps = {
   date: string;
@@ -72,7 +73,7 @@ export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProp
   if (habits.length === 0) {
     return (
       <p className="text-muted-foreground text-sm">
-        No habits yet. Click &quot;Edit Habits&quot; to add some.
+        No habits yet. Click &quot;Manage Habits&quot; to add some.
       </p>
     );
   }
@@ -111,7 +112,7 @@ export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProp
               </span>
             ) : null}
             <span className="ml-auto text-sm font-medium text-xp">
-              +{habit.xp} XP
+              +{difficultyToXp(habit.difficulty as HabitDifficulty)} XP
             </span>
           </div>
         );
