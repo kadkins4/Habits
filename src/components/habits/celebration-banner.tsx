@@ -1,60 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-
-type Celebration = {
-  id: string;
-  message: string;
-};
-
-type StatsSnapshot = {
-  dailyPct: number;
-  weeklyPct: number;
-  monthlyPct: number;
-  streak: number;
-};
-
-const STREAK_MILESTONES = [7, 14, 30];
-
-export function detectCelebrations(
-  prev: StatsSnapshot,
-  current: StatsSnapshot & { dailyEarned: number }
-): Celebration[] {
-  const celebrations: Celebration[] = [];
-
-  if (current.dailyPct === 100 && prev.dailyPct < 100) {
-    celebrations.push({
-      id: "daily",
-      message: `Perfect day! +${current.dailyEarned} XP earned`,
-    });
-  }
-
-  if (current.weeklyPct === 100 && prev.weeklyPct < 100) {
-    celebrations.push({
-      id: "weekly",
-      message: "Flawless week! Keep it up!",
-    });
-  }
-
-  if (current.monthlyPct === 100 && prev.monthlyPct < 100) {
-    celebrations.push({
-      id: "monthly",
-      message: "Legendary month! Unstoppable!",
-    });
-  }
-
-  for (const milestone of STREAK_MILESTONES) {
-    if (current.streak >= milestone && prev.streak < milestone) {
-      celebrations.push({
-        id: `streak-${milestone}`,
-        message: `🔥 ${milestone}-day streak!`,
-      });
-    }
-  }
-
-  return celebrations;
-}
+import { detectCelebrations } from "@/components/habits/utils";
+import type { StatsSnapshot, Celebration } from "@/lib/types";
 
 type CelebrationBannerProps = {
   stats: {
@@ -67,7 +16,7 @@ type CelebrationBannerProps = {
 
 export function CelebrationBanner({ stats }: CelebrationBannerProps) {
   const [celebrations, setCelebrations] = useState<Celebration[]>([]);
-  const [prevSnapshot, setPrevSnapshot] = useState<StatsSnapshot | null>(null);
+  const prevSnapshotRef = useRef<StatsSnapshot | null>(null);
 
   useEffect(() => {
     if (!stats) return;
@@ -80,20 +29,19 @@ export function CelebrationBanner({ stats }: CelebrationBannerProps) {
       dailyEarned: stats.daily.earned,
     };
 
-    if (prevSnapshot) {
-      const newCelebrations = detectCelebrations(prevSnapshot, current);
+    if (prevSnapshotRef.current) {
+      const newCelebrations = detectCelebrations(prevSnapshotRef.current, current);
       if (newCelebrations.length > 0) {
         setCelebrations((prev) => [...prev, ...newCelebrations]);
       }
     }
 
-    setPrevSnapshot({
+    prevSnapshotRef.current = {
       dailyPct: current.dailyPct,
       weeklyPct: current.weeklyPct,
       monthlyPct: current.monthlyPct,
       streak: current.streak,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
   }, [stats]);
 
   function dismiss(id: string) {

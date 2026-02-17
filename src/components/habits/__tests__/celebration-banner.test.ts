@@ -1,12 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { detectCelebrations } from "@/components/habits/celebration-banner";
-
-type StatsSnapshot = {
-  dailyPct: number;
-  weeklyPct: number;
-  monthlyPct: number;
-  streak: number;
-};
+import { detectCelebrations } from "@/components/habits/utils";
+import type { StatsSnapshot } from "@/lib/types";
 
 function makeSnapshot(overrides: Partial<StatsSnapshot> = {}): StatsSnapshot {
   return { dailyPct: 0, weeklyPct: 0, monthlyPct: 0, streak: 0, ...overrides };
