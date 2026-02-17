@@ -1,16 +1,20 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import { useHabits, useCompletions, useStats } from "@/lib/api";
+import { useHabits, useCompletions, useStats, useDailyStats } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
-import { formatDate } from "@/lib/types";
 import type { Habit, Completion } from "@/lib/types";
 
-export function HabitChecklist() {
-  const today = formatDate(new Date());
+type HabitChecklistProps = {
+  date: string;
+  isYesterday?: boolean;
+};
+
+export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProps) {
   const { habits, isLoading: habitsLoading, error: habitsError } = useHabits();
-  const { completions, mutate: mutateCompletions } = useCompletions(today);
+  const { completions, mutate: mutateCompletions } = useCompletions(date);
   const { mutate: mutateStats } = useStats();
+  const { mutate: mutateDailyStats } = useDailyStats(date);
 
   const completedHabitIds = new Set(
     completions.map((c: Completion) => c.habit_id)
@@ -20,11 +24,12 @@ export function HabitChecklist() {
     await fetch("/api/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ habit_id: habitId, date: today }),
+      body: JSON.stringify({ habit_id: habitId, date }),
     });
 
     mutateCompletions();
     mutateStats();
+    mutateDailyStats();
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLDivElement>, index: number) {
@@ -80,6 +85,7 @@ export function HabitChecklist() {
           <div
             key={habit.id}
             data-habit-item
+            data-state={isCompleted ? "checked" : "unchecked"}
             role="listitem"
             tabIndex={0}
             onKeyDown={(e) => handleKeyDown(e, index)}
@@ -99,6 +105,11 @@ export function HabitChecklist() {
             <span className={isCompleted ? "line-through text-muted-foreground" : ""}>
               {habit.name}
             </span>
+            {isYesterday ? (
+              <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                YESTERDAY
+              </span>
+            ) : null}
             <span className="ml-auto text-sm font-medium text-xp">
               +{habit.xp} XP
             </span>

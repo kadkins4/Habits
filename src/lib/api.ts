@@ -35,6 +35,19 @@ export function useStats() {
   };
 }
 
+export function useDailyStats(date: string) {
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/stats?date=${date}`,
+    fetcher
+  );
+  return {
+    daily: data?.daily ?? null,
+    isLoading,
+    error,
+    mutate,
+  };
+}
+
 export function useSettings() {
   const { data, error, isLoading, mutate } = useSWR("/api/settings", fetcher);
   return {

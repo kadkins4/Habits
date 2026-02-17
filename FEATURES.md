@@ -6,7 +6,11 @@ Planned features for Gamified Habits organized by release milestone. Items move 
 
 ## Done
 
-_(none yet)_
+### Daily UX Shell: Date Toggle + Pending Banner
+
+- Today/Yesterday toggle chip on the daily card
+- Pending items banner with scroll-to-unchecked
+- Date-aware stats API and progress bar
 
 ---
 
@@ -28,10 +32,10 @@ _Each epic should be shippable in 1-3 days. Focus: daily truth/accountability lo
 
 ### Epic: Daily UX Shell (Single Page)
 
-- Main screen is a single page with TODAY as the primary view
-- Add Yesterday as a small secondary action (chip/link)
-- Show a subtle banner if anything is pending: "X items still unconfirmed"
-- Tapping banner scrolls to first unconfirmed item
+- ~~Main screen is a single page with TODAY as the primary view~~
+- ~~Add Yesterday as a small secondary action (chip/link)~~
+- ~~Show a subtle banner if anything is pending: "X items still unconfirmed"~~
+- ~~Tapping banner scrolls to first unconfirmed item~~
 
 ### Epic: Habit & Anti-Habit Checklist (Binary v1)
 

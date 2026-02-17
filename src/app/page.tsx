@@ -1,19 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { HabitChecklist } from "@/components/habits/habit-checklist";
-import { DailyProgress } from "@/components/stats/daily-progress";
+import { TodayCard } from "@/components/habits/today-card";
 import { WeeklyCard } from "@/components/stats/weekly-card";
 import { MonthlyCard } from "@/components/stats/monthly-card";
-import { StreakCounter } from "@/components/stats/streak-counter";
 import { CelebrationBanner } from "@/components/habits/celebration-banner";
 import { HabitEditor } from "@/components/habits/habit-editor";
-
-function formatDisplayDate(): string {
-  return new Date().toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-}
 
 export default function Dashboard() {
   return (
@@ -26,18 +15,7 @@ export default function Dashboard() {
 
         <CelebrationBanner />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span>TODAY — {formatDisplayDate()}</span>
-              <StreakCounter />
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <HabitChecklist />
-            <DailyProgress />
-          </CardContent>
-        </Card>
+        <TodayCard />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <WeeklyCard />

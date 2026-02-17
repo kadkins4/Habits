@@ -1,18 +1,22 @@
 "use client";
 
-import { useStats } from "@/lib/api";
+import { useDailyStats } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
 import { XpDelta } from "@/components/stats/xp-delta";
 
-export function DailyProgress() {
-  const { stats, isLoading, error } = useStats();
+type DailyProgressProps = {
+  date: string;
+};
+
+export function DailyProgress({ date }: DailyProgressProps) {
+  const { daily, isLoading, error } = useDailyStats(date);
 
   if (error) return null;
-  if (isLoading || !stats) {
+  if (isLoading || !daily) {
     return <div className="h-12 rounded bg-muted animate-pulse" />;
   }
 
-  const { earned, possible, percentage } = stats.daily;
+  const { earned, possible, percentage } = daily;
 
   return (
     <div className="space-y-2">

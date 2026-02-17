@@ -10,8 +10,11 @@ import {
   formatDate,
 } from "@/lib/scoring";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const dateParam = searchParams.get("date");
+
     const settingsRow = await db
       .select()
       .from(settings)
@@ -19,9 +22,15 @@ export async function GET() {
 
     const includeWeekends = settingsRow.length > 0 && settingsRow[0].value === "true";
 
-    const today = formatDate(new Date());
+    const date = dateParam ?? formatDate(new Date());
 
-    const daily = calculateDailyScore(today);
+    const daily = calculateDailyScore(date);
+
+    // Only return full stats when no date filter (default "today" view)
+    if (dateParam) {
+      return NextResponse.json({ daily });
+    }
+
     const weekly = calculateWeeklyScore(includeWeekends);
     const monthly = calculateMonthlyScore();
     const streak = calculateStreak(includeWeekends);
