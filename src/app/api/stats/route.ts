@@ -7,6 +7,7 @@ import {
   calculateWeeklyScore,
   calculateMonthlyScore,
   calculateStreak,
+  formatDate,
 } from "@/lib/scoring";
 
 export async function GET() {
@@ -17,7 +18,7 @@ export async function GET() {
 
   const includeWeekends = settingsRow.length > 0 && settingsRow[0].value === "true";
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = formatDate(new Date());
 
   const daily = calculateDailyScore(today);
   const weekly = calculateWeeklyScore(includeWeekends);
