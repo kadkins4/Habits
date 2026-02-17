@@ -88,7 +88,7 @@ We use two markdown files to track work. Both follow the same pattern: items are
 | `FEATURES.md` | Planned features by impact tier | **Next** -> **In Progress** -> **Done** |
 
 - When starting a bug or feature, move its heading under the appropriate status section.
-- When finishing, move it to **Done**.
+- When finishing, remove the item from the list entirely and add just the `###` heading under **Done** (no description). Keep the list clean — no strikethroughs.
 - New bugs go under **Next** with a priority prefix and a root cause description and affected files.
 - Bug priorities: **P1** (blocking / broken core functionality), **P2** (degraded experience), **P3** (minor annoyance).
 - New features go into the appropriate **Backlog** tier (High / Medium / Nice to Have) unless they're immediately next up.
