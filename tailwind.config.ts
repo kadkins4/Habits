@@ -59,7 +59,17 @@ const config: Config = {
   			xp: 'hsl(var(--xp))',
   			streak: 'hsl(var(--streak))',
   			success: 'hsl(var(--success))'
-  		}
+  		},
+  		keyframes: {
+  			'bounce-in': {
+  				'0%': { transform: 'scale(0)', opacity: '0' },
+  				'50%': { transform: 'scale(1.2)' },
+  				'100%': { transform: 'scale(1)', opacity: '1' },
+  			},
+  		},
+  		animation: {
+  			'bounce-in': 'bounce-in 0.3s ease-out',
+  		},
   	}
   },
   plugins: [tailwindcssAnimate],

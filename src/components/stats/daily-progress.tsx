@@ -2,6 +2,7 @@
 
 import { useStats } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
+import { XpDelta } from "@/components/stats/xp-delta";
 
 export function DailyProgress() {
   const { stats, isLoading, error } = useStats();
@@ -19,6 +20,7 @@ export function DailyProgress() {
         <span className="font-medium">Day Progress</span>
         <span className="text-xp font-medium">
           {earned}/{possible} XP ({percentage}%)
+          <XpDelta earned={earned} />
         </span>
       </div>
       <Progress value={percentage} />
