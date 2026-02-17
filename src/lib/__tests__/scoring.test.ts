@@ -31,7 +31,6 @@ import {
   calculateStreak,
   formatDate,
   getMonday,
-  isWeekend,
   getDaysInRange,
 } from "@/lib/scoring";
 
@@ -60,35 +59,14 @@ describe("getMonday", () => {
   });
 });
 
-describe("isWeekend", () => {
-  it("returns true for Saturday and Sunday", () => {
-    expect(isWeekend(new Date(2026, 1, 14))).toBe(true);
-    expect(isWeekend(new Date(2026, 1, 15))).toBe(true);
-  });
-
-  it("returns false for weekdays", () => {
-    expect(isWeekend(new Date(2026, 1, 9))).toBe(false);
-    expect(isWeekend(new Date(2026, 1, 13))).toBe(false);
-  });
-});
-
 describe("getDaysInRange", () => {
-  it("returns all days in range when including weekends", () => {
+  it("returns all days in range", () => {
     const start = new Date(2026, 1, 9);
     const end = new Date(2026, 1, 15);
-    const days = getDaysInRange(start, end, true);
+    const days = getDaysInRange(start, end);
     expect(days).toHaveLength(7);
     expect(days[0]).toBe("2026-02-09");
     expect(days[6]).toBe("2026-02-15");
-  });
-
-  it("excludes weekends when flag is false", () => {
-    const start = new Date(2026, 1, 9);
-    const end = new Date(2026, 1, 15);
-    const days = getDaysInRange(start, end, false);
-    expect(days).toHaveLength(5);
-    expect(days).not.toContain("2026-02-14");
-    expect(days).not.toContain("2026-02-15");
   });
 });
 
@@ -160,7 +138,7 @@ describe("calculateStreak", () => {
       .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-11")])
       .mockReturnValueOnce([habit]).mockReturnValueOnce([]);
 
-    const streak = calculateStreak(true);
+    const streak = calculateStreak();
     expect(streak).toBe(2);
 
     vi.useRealTimers();
@@ -178,7 +156,7 @@ describe("calculateStreak", () => {
       .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-10")])
       .mockReturnValueOnce([habit]).mockReturnValueOnce([]);
 
-    const streak = calculateStreak(true);
+    const streak = calculateStreak();
     expect(streak).toBe(2);
 
     vi.useRealTimers();
@@ -196,24 +174,7 @@ describe("calculateStreak", () => {
       .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-10")])
       .mockReturnValueOnce([habit]).mockReturnValueOnce([]);
 
-    const streak = calculateStreak(true);
-    expect(streak).toBe(2);
-
-    vi.useRealTimers();
-  });
-
-  it("skips weekends when configured", () => {
-    vi.setSystemTime(new Date(2026, 1, 9));
-
-    const habit = { id: "h1", name: "Exercise", xp: 10, active: 1, sort_order: 1, created_at: "2026-01-01T00:00:00.000Z" };
-    const completion = (date: string) => ({ id: `c-${date}`, habit_id: "h1", date });
-
-    mockAll
-      .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-09")])
-      .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-06")])
-      .mockReturnValueOnce([habit]).mockReturnValueOnce([]);
-
-    const streak = calculateStreak(false);
+    const streak = calculateStreak();
     expect(streak).toBe(2);
 
     vi.useRealTimers();
@@ -229,7 +190,7 @@ describe("calculateStreak", () => {
       .mockReturnValueOnce([habit]).mockReturnValueOnce([completion("2026-02-12")])
       .mockReturnValueOnce([habit]).mockReturnValueOnce([]);
 
-    const streak = calculateStreak(true);
+    const streak = calculateStreak();
     expect(streak).toBe(1);
 
     vi.useRealTimers();

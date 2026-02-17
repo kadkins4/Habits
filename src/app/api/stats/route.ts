@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { settings } from "@/db/schema";
 import {
   calculateDailyScore,
   calculateWeeklyScore,
@@ -15,13 +12,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dateParam = searchParams.get("date");
 
-    const settingsRow = await db
-      .select()
-      .from(settings)
-      .where(eq(settings.key, "include_weekends"));
-
-    const includeWeekends = settingsRow.length > 0 && settingsRow[0].value === "true";
-
     const date = dateParam ?? formatDate(new Date());
 
     const daily = calculateDailyScore(date);
@@ -31,9 +21,9 @@ export async function GET(request: Request) {
       return NextResponse.json({ daily });
     }
 
-    const weekly = calculateWeeklyScore(includeWeekends);
+    const weekly = calculateWeeklyScore();
     const monthly = calculateMonthlyScore();
-    const streak = calculateStreak(includeWeekends);
+    const streak = calculateStreak();
 
     return NextResponse.json({ daily, weekly, monthly, streak });
   } catch (error) {

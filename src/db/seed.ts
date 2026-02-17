@@ -107,13 +107,9 @@ for (let daysBack = 1; daysBack <= 60; daysBack++) {
   }
 }
 
-// Seed default settings
-db.insert(settings).values({ key: "include_weekends", value: "false" }).run();
-
 const today = formatLocalDate(new Date());
 console.log("Seeded database successfully:");
 console.log(`  - ${seedHabits.length} habits (1 inactive/archived)`);
 console.log(`  - ${completionCount} completions across 60 days`);
-console.log(`  - 1 setting (include_weekends: false)`);
 console.log(`  - Date range: ${formatLocalDate(daysAgo(60))} to ${formatLocalDate(daysAgo(1))}`);
 console.log(`  - Today (${today}) left empty for interactive testing`);

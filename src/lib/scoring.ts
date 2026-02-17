@@ -43,19 +43,12 @@ export function getMonday(d: Date): Date {
   return date;
 }
 
-export function isWeekend(d: Date): boolean {
-  const day = d.getDay();
-  return day === 0 || day === 6;
-}
-
-export function getDaysInRange(start: Date, end: Date, includeWeekends: boolean): string[] {
+export function getDaysInRange(start: Date, end: Date): string[] {
   const days: string[] = [];
   const current = new Date(start);
 
   while (current <= end) {
-    if (includeWeekends || !isWeekend(current)) {
-      days.push(formatDate(current));
-    }
+    days.push(formatDate(current));
     current.setDate(current.getDate() + 1);
   }
 
@@ -77,10 +70,10 @@ function sumScoresForDays(days: string[]): Score {
   return { earned, possible, percentage };
 }
 
-export function calculateWeeklyScore(includeWeekends: boolean): Score {
+export function calculateWeeklyScore(): Score {
   const today = new Date();
   const monday = getMonday(today);
-  const days = getDaysInRange(monday, today, includeWeekends);
+  const days = getDaysInRange(monday, today);
 
   return sumScoresForDays(days);
 }
@@ -88,24 +81,18 @@ export function calculateWeeklyScore(includeWeekends: boolean): Score {
 export function calculateMonthlyScore(): Score {
   const today = new Date();
   const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const days = getDaysInRange(firstOfMonth, today, true);
+  const days = getDaysInRange(firstOfMonth, today);
 
   return sumScoresForDays(days);
 }
 
-export function calculateStreak(includeWeekends: boolean): number {
+export function calculateStreak(): number {
   let streak = 0;
   const current = new Date();
   let isToday = true;
 
   for (let i = 0; i < 365; i++) {
     const dateStr = formatDate(current);
-
-    if (!includeWeekends && isWeekend(current)) {
-      current.setDate(current.getDate() - 1);
-      isToday = false;
-      continue;
-    }
 
     const score = calculateDailyScore(dateStr);
 

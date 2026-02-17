@@ -58,24 +58,3 @@ export function useSettings() {
   };
 }
 
-export function useToggleWeekends() {
-  const { settings, mutate: mutateSettings } = useSettings();
-  const { mutate: mutateStats } = useStats();
-
-  const includeWeekends = settings.include_weekends === true;
-
-  async function toggle() {
-    await fetch("/api/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: "include_weekends",
-        value: !includeWeekends,
-      }),
-    });
-    mutateSettings();
-    mutateStats();
-  }
-
-  return { includeWeekends, toggle };
-}
