@@ -96,7 +96,10 @@ export function HabitChecklist() {
           >
             <Checkbox
               checked={isCompleted}
-              onCheckedChange={() => toggleHabit(habit.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleHabit(habit.id);
+              }}
               tabIndex={-1}
             />
             <span className={isCompleted ? "line-through text-muted-foreground" : ""}>
