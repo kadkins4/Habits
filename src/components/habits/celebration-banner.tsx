@@ -2,19 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useStats } from "@/lib/api";
 import { detectCelebrations } from "@/components/habits/utils";
 import type { StatsSnapshot, Celebration } from "@/lib/types";
 
-type CelebrationBannerProps = {
-  stats: {
-    daily: { earned: number; possible: number; percentage: number };
-    weekly: { earned: number; possible: number; percentage: number };
-    monthly: { earned: number; possible: number; percentage: number };
-    streak: number;
-  } | null;
-};
-
-export function CelebrationBanner({ stats }: CelebrationBannerProps) {
+export function CelebrationBanner() {
+  const { stats } = useStats();
   const [celebrations, setCelebrations] = useState<Celebration[]>([]);
   const prevSnapshotRef = useRef<StatsSnapshot | null>(null);
 

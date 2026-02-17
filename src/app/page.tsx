@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HabitChecklist } from "@/components/habits/habit-checklist";
 import { DailyProgress } from "@/components/stats/daily-progress";
@@ -8,9 +6,8 @@ import { MonthlyCard } from "@/components/stats/monthly-card";
 import { StreakCounter } from "@/components/stats/streak-counter";
 import { CelebrationBanner } from "@/components/habits/celebration-banner";
 import { HabitEditor } from "@/components/habits/habit-editor";
-import { useStats } from "@/lib/api";
 
-function formatDate(): string {
+function formatDisplayDate(): string {
   return new Date().toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -19,8 +16,6 @@ function formatDate(): string {
 }
 
 export default function Dashboard() {
-  const { stats } = useStats();
-
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
@@ -29,12 +24,12 @@ export default function Dashboard() {
           <HabitEditor />
         </header>
 
-        <CelebrationBanner stats={stats} />
+        <CelebrationBanner />
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>TODAY — {formatDate()}</span>
+              <span>TODAY — {formatDisplayDate()}</span>
               <StreakCounter />
             </CardTitle>
           </CardHeader>
