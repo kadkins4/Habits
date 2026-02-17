@@ -3,23 +3,17 @@
 import type { KeyboardEvent } from "react";
 import { useHabits, useCompletions, useStats } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
-
-function getToday(): string {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+import { formatDate } from "@/lib/types";
+import type { Habit, Completion } from "@/lib/types";
 
 export function HabitChecklist() {
-  const today = getToday();
+  const today = formatDate(new Date());
   const { habits, isLoading: habitsLoading, error: habitsError } = useHabits();
   const { completions, mutate: mutateCompletions } = useCompletions(today);
   const { mutate: mutateStats } = useStats();
 
   const completedHabitIds = new Set(
-    completions.map((c: { habit_id: string }) => c.habit_id)
+    completions.map((c: Completion) => c.habit_id)
   );
 
   async function toggleHabit(habitId: string) {
@@ -80,7 +74,7 @@ export function HabitChecklist() {
 
   return (
     <div className="space-y-2" role="list">
-      {habits.map((habit: { id: string; name: string; xp: number }, index: number) => {
+      {habits.map((habit: Habit, index: number) => {
         const isCompleted = completedHabitIds.has(habit.id);
         return (
           <div

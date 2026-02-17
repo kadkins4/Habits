@@ -1,12 +1,8 @@
 import { and, eq, lte } from "drizzle-orm";
 import { db } from "@/db";
 import { habits, completions } from "@/db/schema";
-
-type Score = {
-  earned: number;
-  possible: number;
-  percentage: number;
-};
+import { formatDate } from "@/lib/types";
+import type { Score } from "@/lib/types";
 
 export function calculateDailyScore(date: string): Score {
   const activeHabits = db
@@ -37,12 +33,7 @@ export function calculateDailyScore(date: string): Score {
   return { earned, possible, percentage };
 }
 
-export function formatDate(d: Date): string {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+export { formatDate } from "@/lib/types";
 
 export function getMonday(d: Date): Date {
   const date = new Date(d);
@@ -71,11 +62,7 @@ export function getDaysInRange(start: Date, end: Date, includeWeekends: boolean)
   return days;
 }
 
-export function calculateWeeklyScore(includeWeekends: boolean): Score {
-  const today = new Date();
-  const monday = getMonday(today);
-  const days = getDaysInRange(monday, today, includeWeekends);
-
+function sumScoresForDays(days: string[]): Score {
   let earned = 0;
   let possible = 0;
 
@@ -90,23 +77,20 @@ export function calculateWeeklyScore(includeWeekends: boolean): Score {
   return { earned, possible, percentage };
 }
 
+export function calculateWeeklyScore(includeWeekends: boolean): Score {
+  const today = new Date();
+  const monday = getMonday(today);
+  const days = getDaysInRange(monday, today, includeWeekends);
+
+  return sumScoresForDays(days);
+}
+
 export function calculateMonthlyScore(): Score {
   const today = new Date();
   const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const days = getDaysInRange(firstOfMonth, today, true);
 
-  let earned = 0;
-  let possible = 0;
-
-  for (const day of days) {
-    const score = calculateDailyScore(day);
-    earned += score.earned;
-    possible += score.possible;
-  }
-
-  const percentage = possible > 0 ? Math.round((earned / possible) * 100) : 0;
-
-  return { earned, possible, percentage };
+  return sumScoresForDays(days);
 }
 
 export function calculateStreak(includeWeekends: boolean): number {

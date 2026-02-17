@@ -12,25 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useHabits, useCompletions, useStats } from "@/lib/api";
-
-type Habit = {
-  id: string;
-  name: string;
-  xp: number;
-  active: number;
-  sort_order: number;
-  created_at: string;
-};
-
-function getToday(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
+import { formatDate } from "@/lib/types";
+import type { Habit } from "@/lib/types";
 
 export function HabitEditor() {
   const [open, setOpen] = useState(false);
   const { habits, mutate: mutateHabits } = useHabits();
-  const { mutate: mutateCompletions } = useCompletions(getToday());
+  const { mutate: mutateCompletions } = useCompletions(formatDate(new Date()));
   const { mutate: mutateStats } = useStats();
 
   const [newName, setNewName] = useState("");

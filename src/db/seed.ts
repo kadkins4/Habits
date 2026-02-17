@@ -8,8 +8,15 @@ mkdirSync("./data", { recursive: true });
 const sqlite = new Database("./data/habits.db");
 const db = drizzle(sqlite);
 
-const today = new Date().toISOString().split("T")[0];
-const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+function formatLocalDate(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+const today = formatLocalDate(new Date());
+const yesterday = formatLocalDate(new Date(Date.now() - 86400000));
 const now = new Date().toISOString();
 
 // Clear existing data
