@@ -124,8 +124,8 @@ We use two markdown files to track work. Both follow the same pattern: items are
 - Prefer explicit ternaries over short-circuit evaluation for conditional rendering:
   ```tsx
   // Good
-  {share_url ? <ShareButton shareUrl={share_url} title={title} /> : null}
+  {condition ? <Component /> : null}
 
   // Bad
-  {!!share_url && <ShareButton shareUrl={share_url} title={title} />}
+  {!!condition && <Component />}
   ```
