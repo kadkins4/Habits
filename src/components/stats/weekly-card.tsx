@@ -1,28 +1,13 @@
 "use client";
 
-import { useStats, useSettings } from "@/lib/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { useStats, useToggleWeekends } from "@/lib/api";
+import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { StatCard } from "@/components/stats/stat-card";
 
 export function WeeklyCard() {
-  const { stats, isLoading: statsLoading, mutate: mutateStats } = useStats();
-  const { settings, mutate: mutateSettings } = useSettings();
-
-  const includeWeekends = settings.include_weekends === true;
-
-  async function toggleWeekends() {
-    await fetch("/api/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: "include_weekends",
-        value: !includeWeekends,
-      }),
-    });
-    mutateSettings();
-    mutateStats();
-  }
+  const { stats, isLoading: statsLoading } = useStats();
+  const { includeWeekends, toggle: toggleWeekends } = useToggleWeekends();
 
   if (statsLoading || !stats) {
     return (
@@ -34,29 +19,15 @@ export function WeeklyCard() {
     );
   }
 
-  const { earned, possible, percentage } = stats.weekly;
-
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">Weekly Score</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="text-sm font-medium text-xp">
-          {earned} / {possible} XP
-        </div>
-        <Progress value={percentage} />
-        <div className="text-sm text-right text-muted-foreground">
-          {percentage}%
-        </div>
-        <label className="flex items-center gap-2 cursor-pointer text-sm">
-          <Checkbox
-            checked={includeWeekends}
-            onCheckedChange={toggleWeekends}
-          />
-          Include weekends
-        </label>
-      </CardContent>
-    </Card>
+    <StatCard title="Weekly Score" score={stats.weekly}>
+      <label className="flex items-center gap-2 cursor-pointer text-sm">
+        <Checkbox
+          checked={includeWeekends}
+          onCheckedChange={toggleWeekends}
+        />
+        Include weekends
+      </label>
+    </StatCard>
   );
 }

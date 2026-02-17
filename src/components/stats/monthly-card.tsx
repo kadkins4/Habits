@@ -1,8 +1,8 @@
 "use client";
 
 import { useStats } from "@/lib/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
+import { StatCard } from "@/components/stats/stat-card";
 
 function getCurrentMonth(): string {
   return new Date().toLocaleDateString("en-US", {
@@ -24,22 +24,7 @@ export function MonthlyCard() {
     );
   }
 
-  const { earned, possible, percentage } = stats.monthly;
-
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">Monthly Score</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="text-sm font-medium text-xp">
-          {earned} / {possible} XP
-        </div>
-        <Progress value={percentage} />
-        <div className="text-sm text-right text-muted-foreground">
-          {percentage}% — {getCurrentMonth()}
-        </div>
-      </CardContent>
-    </Card>
+    <StatCard title="Monthly Score" score={stats.monthly} subtitle={getCurrentMonth()} />
   );
 }
