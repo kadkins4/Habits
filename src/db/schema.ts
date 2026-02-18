@@ -24,6 +24,20 @@ export const completions = sqliteTable(
   ]
 );
 
+export const antiHabitEntries = sqliteTable(
+  "anti_habit_entries",
+  {
+    id: text("id").primaryKey(),
+    habit_id: text("habit_id").notNull(),
+    date: text("date").notNull(),
+    avoided: integer("avoided").notNull().default(0),
+    temptation_count: integer("temptation_count").notNull().default(0),
+  },
+  (table) => [
+    uniqueIndex("anti_habit_entries_habit_date_idx").on(table.habit_id, table.date),
+  ]
+);
+
 export const settings = sqliteTable("settings", {
   key: text("key").primaryKey(),
   value: text("value").notNull(),

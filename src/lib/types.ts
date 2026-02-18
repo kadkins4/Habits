@@ -1,8 +1,10 @@
-import type { habits, completions } from "@/db/schema";
+import type { habits, completions, antiHabitEntries } from "@/db/schema";
 
 export type Habit = typeof habits.$inferSelect;
 
 export type Completion = typeof completions.$inferSelect;
+
+export type AntiHabitEntry = typeof antiHabitEntries.$inferSelect;
 
 export type HabitStatus = "backlog" | "active" | "archived";
 

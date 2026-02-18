@@ -30,6 +30,19 @@ export function useCompletions(date: string) {
   };
 }
 
+export function useAntiHabitEntries(date: string) {
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/anti-habit-entries?date=${date}`,
+    fetcher
+  );
+  return {
+    entries: data?.entries ?? [],
+    isLoading,
+    error,
+    mutate,
+  };
+}
+
 export function useStats() {
   const { data, error, isLoading, mutate } = useSWR("/api/stats", fetcher);
   return {

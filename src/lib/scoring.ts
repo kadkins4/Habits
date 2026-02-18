@@ -8,7 +8,11 @@ export function calculateDailyScore(date: string): Score {
   const activeHabits = db
     .select()
     .from(habits)
-    .where(and(eq(habits.status, "active"), lte(habits.created_at, date + "T23:59:59.999Z")))
+    .where(and(
+      eq(habits.status, "active"),
+      eq(habits.type, "habit"),
+      lte(habits.created_at, date + "T23:59:59.999Z")
+    ))
     .all();
 
   if (activeHabits.length === 0) {
