@@ -30,13 +30,6 @@ _(pick from the backlog below when ready)_
 
 _Each epic should be shippable in 1-3 days. Focus: daily truth/accountability loop._
 
-### Epic: Daily UX Shell (Single Page)
-
-- ~~Main screen is a single page with TODAY as the primary view~~
-- ~~Add Yesterday as a small secondary action (chip/link)~~
-- ~~Show a subtle banner if anything is pending: "X items still unconfirmed"~~
-- ~~Tapping banner scrolls to first unconfirmed item~~
-
 ### Epic: Habit & Anti-Habit Checklist (Binary v1)
 
 - Habits list with binary toggle (complete/incomplete)
