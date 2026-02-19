@@ -12,6 +12,13 @@ Planned features for Gamified Habits organized by release milestone. Items move 
 - Pending items banner with scroll-to-unchecked
 - Date-aware stats API and progress bar
 
+### Epic: Habit & Anti-Habit Checklist (Binary v1)
+
+- Habits list with binary toggle (complete/incomplete)
+- Anti-habits list with confirmation-based controls:
+  - Status options: `unknown` | `avoided` | `slipped` (and later `auto_failed`)
+- Temptation counter UI for anti-habits (`temptationCount`, info-only)
+
 ---
 
 ## In Progress
@@ -29,13 +36,6 @@ _(pick from the backlog below when ready)_
 ## MVP — Ship the Accountability-First Core
 
 _Each epic should be shippable in 1-3 days. Focus: daily truth/accountability loop._
-
-### Epic: Habit & Anti-Habit Checklist (Binary v1)
-
-- Habits list with binary toggle (complete/incomplete)
-- Anti-habits list with confirmation-based controls:
-  - Status options: `unknown` | `avoided` | `slipped` (and later `auto_failed`)
-- Temptation counter UI for anti-habits (`temptationCount`, info-only)
 
 ### Epic: Yesterday Mode (1-Day Grace)
 
