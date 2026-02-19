@@ -1,39 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useStats } from "@/lib/api";
 import { detectCelebrations } from "@/components/habits/utils";
+import { useToasts } from "@/lib/use-toasts";
 import type { StatsSnapshot, Celebration } from "@/lib/types";
-
-const AUTO_DISMISS_MS = 5000;
-
-type Toast = Celebration & { exiting: boolean };
 
 export function CelebrationBanner() {
   const { stats } = useStats();
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const { toasts, add, dismiss } = useToasts<Celebration>();
   const prevSnapshotRef = useRef<StatsSnapshot | null>(null);
-  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
-
-  useEffect(() => {
-    const timers = timersRef.current;
-    return () => {
-      timers.forEach((timer) => clearTimeout(timer));
-    };
-  }, []);
-
-  function scheduleAutoDismiss(id: string) {
-    const timer = setTimeout(() => {
-      setToasts((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, exiting: true } : t))
-      );
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
-        timersRef.current.delete(id);
-      }, 300);
-    }, AUTO_DISMISS_MS);
-    timersRef.current.set(id, timer);
-  }
 
   useEffect(() => {
     if (!stats) return;
@@ -49,9 +25,7 @@ export function CelebrationBanner() {
     if (prevSnapshotRef.current) {
       const newCelebrations = detectCelebrations(prevSnapshotRef.current, current);
       if (newCelebrations.length > 0) {
-        const newToasts = newCelebrations.map((c) => ({ ...c, exiting: false }));
-        setToasts((prev) => [...prev, ...newToasts]);
-        newToasts.forEach((t) => scheduleAutoDismiss(t.id));
+        add(newCelebrations);
       }
     }
 
@@ -61,21 +35,7 @@ export function CelebrationBanner() {
       monthlyPct: current.monthlyPct,
       streak: current.streak,
     };
-  }, [stats]);
-
-  function dismiss(id: string) {
-    const timer = timersRef.current.get(id);
-    if (timer) {
-      clearTimeout(timer);
-      timersRef.current.delete(id);
-    }
-    setToasts((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, exiting: true } : t))
-    );
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 300);
-  }
+  }, [stats, add]);
 
   if (toasts.length === 0) return null;
 

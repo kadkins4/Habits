@@ -2,9 +2,8 @@
 
 import type { KeyboardEvent } from "react";
 import { useHabits, useCompletions, useStats, useDailyStats, useAntiHabitEntries } from "@/lib/api";
-import { Checkbox } from "@/components/ui/checkbox";
-import { difficultyToXp } from "@/lib/types";
-import type { Habit, Completion, HabitDifficulty, AntiHabitEntry } from "@/lib/types";
+import type { Habit, Completion, AntiHabitEntry } from "@/lib/types";
+import { HabitItem } from "@/components/habits/habit-item";
 import { AntiHabitItem } from "@/components/habits/anti-habit-item";
 
 type HabitChecklistProps = {
@@ -106,43 +105,17 @@ export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProp
           <p className="text-muted-foreground text-sm">No habits yet.</p>
         ) : (
           <div className="space-y-2" role="list">
-            {regularHabits.map((habit: Habit, index: number) => {
-              const isCompleted = completedHabitIds.has(habit.id);
-              return (
-                <div
-                  key={habit.id}
-                  data-habit-item
-                  data-state={isCompleted ? "checked" : "unchecked"}
-                  role="listitem"
-                  tabIndex={0}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  onClick={() => toggleHabit(habit.id)}
-                  className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring ${
-                    isCompleted ? "border-success/30 bg-success/5" : ""
-                  }`}
-                >
-                  <Checkbox
-                    checked={isCompleted}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleHabit(habit.id);
-                    }}
-                    tabIndex={-1}
-                  />
-                  <span className={isCompleted ? "line-through text-muted-foreground" : ""}>
-                    {habit.name}
-                  </span>
-                  {isYesterday ? (
-                    <span className="text-xs font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                      YESTERDAY
-                    </span>
-                  ) : null}
-                  <span className="ml-auto text-sm font-medium text-xp">
-                    +{difficultyToXp(habit.difficulty as HabitDifficulty)} XP
-                  </span>
-                </div>
-              );
-            })}
+            {regularHabits.map((habit: Habit, index: number) => (
+              <HabitItem
+                key={habit.id}
+                habit={habit}
+                isCompleted={completedHabitIds.has(habit.id)}
+                isYesterday={isYesterday}
+                index={index}
+                onToggle={toggleHabit}
+                onKeyDown={handleKeyDown}
+              />
+            ))}
           </div>
         )}
       </section>
