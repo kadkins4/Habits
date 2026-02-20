@@ -14,6 +14,8 @@ _(none)_
 
 ## Done
 
+### P2 — Anti-habit items not clickable anywhere to toggle
+
 ### P1 — Day progress does not update on toggle
 Root cause was a timezone mismatch: completions were stored using local date (`getFullYear/getMonth/getDate`) but the stats API used `toISOString().split("T")[0]` (UTC). In US timezones, UTC date could differ from local date, so daily stats query missed today's completions. Fixed by using `formatDate()` (local time) in the stats route.
 
