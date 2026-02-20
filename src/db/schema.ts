@@ -30,7 +30,7 @@ export const antiHabitEntries = sqliteTable(
     id: text("id").primaryKey(),
     habit_id: text("habit_id").notNull(),
     date: text("date").notNull(),
-    avoided: integer("avoided").notNull().default(0),
+    status: text("status").notNull().default("unknown"),
     temptation_count: integer("temptation_count").notNull().default(0),
   },
   (table) => [

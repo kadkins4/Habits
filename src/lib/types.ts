@@ -12,6 +12,8 @@ export type HabitDifficulty = "easy" | "medium" | "hard";
 
 export type HabitType = "habit" | "antihabit";
 
+export type AntiHabitStatus = "unknown" | "avoided" | "slipped" | "auto_failed";
+
 const DIFFICULTY_XP: Record<HabitDifficulty, number> = { easy: 5, medium: 10, hard: 20 };
 
 export function difficultyToXp(difficulty: HabitDifficulty): number {

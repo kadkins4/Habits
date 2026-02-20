@@ -2,7 +2,7 @@
 
 import type { KeyboardEvent } from "react";
 import { useHabits, useCompletions, useStats, useDailyStats, useAntiHabitEntries } from "@/lib/api";
-import type { Habit, Completion, AntiHabitEntry } from "@/lib/types";
+import type { Habit, Completion, AntiHabitEntry, AntiHabitStatus } from "@/lib/types";
 import { HabitItem } from "@/components/habits/habit-item";
 import { AntiHabitItem } from "@/components/habits/anti-habit-item";
 
@@ -41,7 +41,16 @@ export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProp
     mutateDailyStats();
   }
 
-  async function postAntiHabitAction(habitId: string, action: "toggle" | "increment" | "decrement") {
+  async function setAntiHabitStatus(habitId: string, status: AntiHabitStatus) {
+    await fetch("/api/anti-habit-entries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ habitId, date, action: "set_status", status }),
+    });
+    mutateEntries();
+  }
+
+  async function postAntiHabitAction(habitId: string, action: "increment" | "decrement") {
     await fetch("/api/anti-habit-entries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -133,7 +142,7 @@ export function HabitChecklist({ date, isYesterday = false }: HabitChecklistProp
                 key={habit.id}
                 habit={habit}
                 entry={entryMap.get(habit.id)}
-                onToggle={(id) => postAntiHabitAction(id, "toggle")}
+                onSetStatus={(id, status) => setAntiHabitStatus(id, status)}
                 onIncrement={(id) => postAntiHabitAction(id, "increment")}
                 onDecrement={(id) => postAntiHabitAction(id, "decrement")}
               />
