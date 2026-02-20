@@ -94,13 +94,13 @@ Note: `AntiHabitEntry` is inferred from schema, so it updates automatically.
 ### Success Criteria:
 
 #### Automated:
-- [ ] `pnpm db:generate` succeeds
-- [ ] `pnpm db:migrate` applies cleanly
-- [ ] `pnpm build` passes
-- [ ] `pnpm lint` passes
+- [x] `pnpm db:generate` succeeds
+- [x] `pnpm db:migrate` applies cleanly
+- [x] `pnpm build` passes
+- [x] `pnpm lint` passes
 
 #### Manual:
-- [ ] Existing data correctly migrated (avoided=1 -> status="avoided", avoided=0 -> status="unknown")
+- [x] Existing data correctly migrated (avoided=1 -> status="avoided", avoided=0 -> status="unknown")
 
 ---
 
@@ -139,8 +139,8 @@ type PostBody = {
 ### Success Criteria:
 
 #### Automated:
-- [ ] `pnpm build` passes
-- [ ] `pnpm lint` passes
+- [x] `pnpm build` passes
+- [x] `pnpm lint` passes
 
 #### Manual:
 - [ ] `POST { action: "set_status", status: "avoided" }` creates/updates entry
@@ -209,8 +209,8 @@ async function setAntiHabitStatus(habitId: string, status: AntiHabitStatus) {
 ### Success Criteria:
 
 #### Automated:
-- [ ] `pnpm build` passes
-- [ ] `pnpm lint` passes
+- [x] `pnpm build` passes
+- [x] `pnpm lint` passes
 
 #### Manual:
 - [ ] Anti-habit shows as "unknown" by default (no status selected)
