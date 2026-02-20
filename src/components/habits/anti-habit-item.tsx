@@ -17,13 +17,17 @@ export function AntiHabitItem({ habit, entry, onToggle, onIncrement, onDecrement
 
   return (
     <div
-      className={`flex items-center gap-3 rounded-lg border p-3 transition-colors ${
+      onClick={() => onToggle(habit.id)}
+      className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors hover:bg-accent ${
         isAvoided ? "border-success/30 bg-success/5" : ""
       }`}
     >
       <Checkbox
         checked={isAvoided}
-        onClick={() => onToggle(habit.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle(habit.id);
+        }}
         tabIndex={-1}
       />
       <span className={isAvoided ? "line-through text-muted-foreground" : ""}>
@@ -31,7 +35,7 @@ export function AntiHabitItem({ habit, entry, onToggle, onIncrement, onDecrement
       </span>
       <div className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground">
         <button
-          onClick={() => onDecrement(habit.id)}
+          onClick={(e) => { e.stopPropagation(); onDecrement(habit.id); }}
           className="w-6 h-6 rounded hover:bg-accent flex items-center justify-center disabled:opacity-40"
           disabled={temptationCount === 0}
           aria-label="Decrease temptation count"
@@ -40,7 +44,7 @@ export function AntiHabitItem({ habit, entry, onToggle, onIncrement, onDecrement
         </button>
         <span className="w-5 text-center tabular-nums">{temptationCount}</span>
         <button
-          onClick={() => onIncrement(habit.id)}
+          onClick={(e) => { e.stopPropagation(); onIncrement(habit.id); }}
           className="w-6 h-6 rounded hover:bg-accent flex items-center justify-center"
           aria-label="Increase temptation count"
         >
