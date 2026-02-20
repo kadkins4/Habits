@@ -6,9 +6,10 @@ import type { Completion } from "@/lib/types";
 type PendingBannerProps = {
   yesterdayDate: string;
   isYesterdayConfirmed: boolean;
+  onOpen: () => void;
 };
 
-export function PendingBanner({ yesterdayDate, isYesterdayConfirmed }: PendingBannerProps) {
+export function PendingBanner({ yesterdayDate, isYesterdayConfirmed, onOpen }: PendingBannerProps) {
   const { habits, isLoading: habitsLoading } = useHabits();
   const { completions, isLoading: completionsLoading } = useCompletions(yesterdayDate);
 
@@ -21,8 +22,11 @@ export function PendingBanner({ yesterdayDate, isYesterdayConfirmed }: PendingBa
   if (pendingCount === 0) return null;
 
   return (
-    <div className="text-sm px-3 py-2 rounded-lg bg-muted/50 text-muted-foreground">
+    <button
+      onClick={onOpen}
+      className="w-full text-left text-sm px-3 py-2 rounded-lg bg-muted/50 text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+    >
       {pendingCount} {pendingCount === 1 ? "item" : "items"} unconfirmed from yesterday
-    </div>
+    </button>
   );
 }

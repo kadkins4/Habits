@@ -23,7 +23,7 @@ Planned features for Gamified Habits organized by release milestone. Items move 
 
 ## In Progress
 
-_(none yet)_
+### Epic: Yesterday Mode (1-Day Grace)
 
 ---
 
@@ -36,12 +36,6 @@ _(pick from the backlog below when ready)_
 ## MVP — Ship the Accountability-First Core
 
 _Each epic should be shippable in 1-3 days. Focus: daily truth/accountability loop._
-
-### Epic: Yesterday Mode (1-Day Grace)
-
-- "Yesterday" opens a bottom sheet/modal with yesterday's full checklist
-- Only yesterday is editable (hard rule)
-- Confirm closes sheet and returns to TODAY
 
 ### Epic: Data Model (Minimal + Extensible)
 

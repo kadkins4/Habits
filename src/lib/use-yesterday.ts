@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useCallback, useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { formatDate } from "@/lib/types";
-
-export type DateView = "today" | "yesterday";
 
 const CONFIRMED_KEY = "yesterday-confirmed";
 
@@ -38,14 +36,9 @@ function subscribe(callback: () => void): () => void {
   return () => window.removeEventListener("storage", callback);
 }
 
-export function useDateToggle() {
-  const [view, setView] = useState<DateView>("today");
-
-  const targetDate = view === "today" ? new Date() : getYesterday();
-  const date = formatDate(targetDate);
-  const displayDate = formatDisplayDate(targetDate);
-  const isYesterday = view === "yesterday";
+export function useYesterday() {
   const yesterdayDate = getYesterdayDate();
+  const yesterdayDisplayDate = formatDisplayDate(getYesterday());
 
   const confirmedDate = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const isYesterdayConfirmed = confirmedDate === yesterdayDate;
@@ -56,12 +49,8 @@ export function useDateToggle() {
   }, [yesterdayDate]);
 
   return {
-    view,
-    setView,
-    date,
-    displayDate,
-    isYesterday,
     yesterdayDate,
+    yesterdayDisplayDate,
     isYesterdayConfirmed,
     confirmYesterday,
   };
